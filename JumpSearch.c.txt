@@ -1,0 +1,72 @@
+//
+// Created by Ei Ei Nyein on 12/31/2022.
+//
+
+#include <stdio.h>
+
+int min(int first, int second);
+int oddNum(int size);
+int jumpSearch (int arr[], int size, int key);
+
+int min(int first, int second){
+    if (second > first){
+        return first;
+    }else{
+        return second;
+    }
+}
+
+int oddNum(int size){
+    int i=1, count=0;
+    if(size < 0){
+        printf("Size is Negative");
+        return -1;
+    }
+    while(size >= i){
+        size = size-i;
+        i = i+2;
+        count++;
+    }
+    return count;
+}
+
+int jumpSearch (int arr[], int size, int key){
+    int step = oddNum(size);
+    int previous = 0;
+
+    while(arr[min(step,size)-1] < key){
+        previous = step;
+        step = step+ oddNum(size);
+        if (previous >= size){
+            return -1;
+        }
+    }
+    if(key == arr[step-1]){
+        printf("Jump Search without Linear!!!\n");
+        printf("We found data. Index : %d and Data : %d.\n",step-1,key);
+        return 0;
+    }
+    else{
+        for (int j = previous; j < step; j++){
+            if ( arr[j]== key){
+                printf("Jump Search with Linear!!!\n");
+                printf(" We found at %d : data is %d", j, arr[j]);
+                return 0;
+            }
+        }
+    }
+
+    return -1;
+}
+
+int main () {
+    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 100, 101, 102, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int toFind = 500;
+    int indexNumber = jumpSearch(arr, size, toFind);
+
+    if (indexNumber != 0) {
+        printf("Not found\n");
+        return 0;
+    }
+}
